@@ -1,70 +1,30 @@
 <?php
-
 namespace LibraryManagementSystem\Models;
 
-class Author extends Person
-{
+class Author {
+    private int $authorId;
+    private string $name;
     private ?string $biography;
     private ?string $nationality;
-    private ?\DateTime $birthDate;
-    private ?\DateTime $deathDate;
+    private ?string $birthDate;
+    private ?string $deathDate;
     private ?string $primaryGenre;
-
-    public function __construct(
-        string $name,
-        string $email = '',
-        string $biography = null,
-        string $nationality = null,
-        \DateTime $birthDate = null,
-        \DateTime $deathDate = null,
-        string $primaryGenre = null,
-        string $phone = ''
-    ) {
-        parent::__construct($name, $email, $phone);
+    
+    public function __construct(int $authorId, string $name, ?string $biography, ?string $nationality, ?string $birthDate, ?string $deathDate, ?string $primaryGenre) {
+        $this->authorId = $authorId;
+        $this->name = $name;
         $this->biography = $biography;
         $this->nationality = $nationality;
         $this->birthDate = $birthDate;
         $this->deathDate = $deathDate;
         $this->primaryGenre = $primaryGenre;
     }
-
-    public function getBiography(): ?string
-    {
-        return $this->biography;
-    }
-
-    public function getNationality(): ?string
-    {
-        return $this->nationality;
-    }
-
-    public function getBirthDate(): ?\DateTime
-    {
-        return $this->birthDate;
-    }
-
-    public function getDeathDate(): ?\DateTime
-    {
-        return $this->deathDate;
-    }
-
-    public function getPrimaryGenre(): ?string
-    {
-        return $this->primaryGenre;
-    }
-
-    public function getAge(): ?int
-    {
-        if (!$this->birthDate) {
-            return null;
-        }
-
-        $endDate = $this->deathDate ?? new \DateTime();
-        return $endDate->diff($this->birthDate)->y;
-    }
-
-    public function isAlive(): bool
-    {
-        return $this->deathDate === null;
-    }
+    
+    public function getAuthorId(): int { return $this->authorId; }
+    public function getName(): string { return $this->name; }
+    public function getBiography(): ?string { return $this->biography; }
+    public function getNationality(): ?string { return $this->nationality; }
+    public function getBirthDate(): ?string { return $this->birthDate; }
+    public function getDeathDate(): ?string { return $this->deathDate; }
+    public function getPrimaryGenre(): ?string { return $this->primaryGenre; }
 }

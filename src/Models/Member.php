@@ -1,94 +1,73 @@
 <?php
-
 namespace LibraryManagementSystem\Models;
 
-abstract class Member extends Person
-{
-    protected string $memberId;
-    protected \DateTime $joinDate;
-    protected \DateTime $expireDate;
-    protected int $totalBorrowed;
-    protected float $totalFines;
-    protected array $borrowHistory = [];
-
+abstract class Member {
+    protected int $memberId;
+    protected string $memberNumber;
+    protected string $fullName;
+    protected string $email;
+    protected ?string $phone;
+    protected string $membershipType;
+    protected string $membershipStartDate;
+    protected string $membershipEndDate;
+    protected int $totalBorrowedCount;
+    protected float $unpaidFees;
+    
     public function __construct(
-        string $memberId,
-        string $name,
+        int $memberId,
+        string $memberNumber,
+        string $fullName,
         string $email,
-        \DateTime $joinDate,
-        \DateTime $expireDate,
-        string $phone = ''
+        ?string $phone,
+        string $membershipType,
+        string $membershipStartDate,
+        string $membershipEndDate,
+        int $totalBorrowedCount = 0,
+        float $unpaidFees = 0.0
     ) {
-        parent::__construct($name, $email, $phone);
         $this->memberId = $memberId;
-        $this->joinDate = $joinDate;
-        $this->expireDate = $expireDate;
-        $this->totalBorrowed = 0;
-        $this->totalFines = 0.0;
+        $this->memberNumber = $memberNumber;
+        $this->fullName = $fullName;
+        $this->email = $email;
+        $this->phone = $phone;
+        $this->membershipType = $membershipType;
+        $this->membershipStartDate = $membershipStartDate;
+        $this->membershipEndDate = $membershipEndDate;
+        $this->totalBorrowedCount = $totalBorrowedCount;
+        $this->unpaidFees = $unpaidFees;
     }
-
+    
+    public function getMemberId(): int { return $this->memberId; }
+    public function getMemberNumber(): string { return $this->memberNumber; }
+    public function getFullName(): string { return $this->fullName; }
+    public function getEmail(): string { return $this->email; }
+    public function getPhone(): ?string { return $this->phone; }
+    public function getMembershipType(): string { return $this->membershipType; }
+    public function getMembershipStartDate(): string { return $this->membershipStartDate; }
+    public function getMembershipEndDate(): string { return $this->membershipEndDate; }
+    public function getTotalBorrowedCount(): int { return $this->totalBorrowedCount; }
+    public function getUnpaidFees(): float { return $this->unpaidFees; }
+    
     abstract public function getBorrowLimit(): int;
     abstract public function getLoanPeriod(): int;
     abstract public function getLateFeePerDay(): float;
-    abstract public function getMemberType(): string;
-
-    public function getMemberId(): string
-    {
-        return $this->memberId;
+    
+    public function addUnpaidFee(float $amount): void {
+        $this->unpaidFees += $amount;
     }
-
-    public function getJoinDate(): \DateTime
-    {
-        return $this->joinDate;
-    }
-
-    public function getExpireDate(): \DateTime
-    {
-        return $this->expireDate;
-    }
-
-    public function getTotalBorrowed(): int
-    {
-        return $this->totalBorrowed;
-    }
-
-    public function getTotalFines(): float
-    {
-        return $this->totalFines;
-    }
-
-    public function isMembershipValid(): bool
-    {
-        return new \DateTime() <= $this->expireDate;
-    }
-
-    public function canBorrow(): bool
-    {
-        return $this->isMembershipValid() && $this->totalFines <= 10.0;
-    }
-
-    public function addBorrowRecord(BorrowRecord $record): void
-    {
-        $this->borrowHistory[] = $record;
-        $this->totalBorrowed++;
-    }
-
-    public function addFine(float $amount): void
-    {
-        $this->totalFines += $amount;
-    }
-
-    public function payFine(float $amount): void
-    {
-        if ($amount > $this->totalFines) {
-            echo "Payment amount exceeds total fines";
-            return;
+    
+    public function payFee(float $amount): void {
+        $this->unpaidFees -= $amount;
+        if ($this->unpaidFees < 0) {
+            $this->unpaidFees = 0;
         }
-        $this->totalFines -= $amount;
     }
-
-    public function renewMembership(\DateTime $newExpireDate): void
-    {
-        $this->expireDate = $newExpireDate;
+    
+    public function incrementBorrowCount(): void {
+        $this->totalBorrowedCount++;
+    }
+    
+    public function decrementBorrowCount(): void {
+        $this->totalBorrowedCount--;
     }
 }
