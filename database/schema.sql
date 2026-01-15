@@ -1,9 +1,9 @@
--- Database Schema for Library Management System
+
 
 CREATE DATABASE IF NOT EXISTS library_db;
 USE library_db;
 
--- Authors table
+
 CREATE TABLE authors (
     author_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE authors (
     primary_genre VARCHAR(50)
 );
 
--- Library branches table
+
 CREATE TABLE library_branches (
     branch_id INT PRIMARY KEY AUTO_INCREMENT,
     branch_name VARCHAR(100) NOT NULL,
@@ -23,13 +23,13 @@ CREATE TABLE library_branches (
     operating_hours VARCHAR(100)
 );
 
--- Categories table
+
 CREATE TABLE categories (
     category_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
--- Books table
+
 CREATE TABLE books (
     book_id INT PRIMARY KEY AUTO_INCREMENT,
     isbn VARCHAR(20) UNIQUE NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE books (
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
--- Book authors (many-to-many relationship)
+
 CREATE TABLE book_authors (
     book_id INT,
     author_id INT,
@@ -49,7 +49,7 @@ CREATE TABLE book_authors (
     FOREIGN KEY (author_id) REFERENCES authors(author_id)
 );
 
--- Book copies at branches
+
 CREATE TABLE book_copies (
     copy_id INT PRIMARY KEY AUTO_INCREMENT,
     book_id INT NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE book_copies (
     UNIQUE KEY book_branch_unique (book_id, branch_id)
 );
 
--- Members base table
+
 CREATE TABLE members (
     member_id INT PRIMARY KEY AUTO_INCREMENT,
     member_number VARCHAR(20) UNIQUE NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE members (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Borrow records table
+
 CREATE TABLE borrow_records (
     borrow_id INT PRIMARY KEY AUTO_INCREMENT,
     member_id INT NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE borrow_records (
     FOREIGN KEY (branch_id) REFERENCES library_branches(branch_id)
 );
 
--- Reservations table
+
 CREATE TABLE reservations (
     reservation_id INT PRIMARY KEY AUTO_INCREMENT,
     member_id INT NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE reservations (
     FOREIGN KEY (branch_id) REFERENCES library_branches(branch_id)
 );
 
--- Payments table
+
 CREATE TABLE payments (
     payment_id INT PRIMARY KEY AUTO_INCREMENT,
     member_id INT NOT NULL,
@@ -116,9 +116,4 @@ CREATE TABLE payments (
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
--- Indexes for performance
-CREATE INDEX idx_books_title ON books(title);
-CREATE INDEX idx_books_isbn ON books(isbn);
-CREATE INDEX idx_members_email ON members(email);
-CREATE INDEX idx_borrow_member_date ON borrow_records(member_id, borrow_date);
-CREATE INDEX idx_borrow_due_date ON borrow_records(due_date);
+
