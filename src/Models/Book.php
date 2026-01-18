@@ -18,7 +18,7 @@ class Book
         $this->publicationYear = $publicationYear;
         $this->category = $category;
         $this->availableCopies = 0;
-        $this->status = "متاح";
+        $this->status = "Available";
         $this->authors = [];
     }
 
