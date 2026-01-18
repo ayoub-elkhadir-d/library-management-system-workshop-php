@@ -1,30 +1,71 @@
 <?php
 namespace LibraryManagementSystem\Models;
 
-class Author {
-    private int $authorId;
-    private string $name;
-    private ?string $biography;
-    private ?string $nationality;
-    private ?string $birthDate;
-    private ?string $deathDate;
-    private ?string $primaryGenre;
-    
-    public function __construct(int $authorId, string $name, ?string $biography, ?string $nationality, ?string $birthDate, ?string $deathDate, ?string $primaryGenre) {
-        $this->authorId = $authorId;
+class Author
+{
+    private $id;
+    private $name;
+    private $biography;
+    private $nationality;
+    private $birthDate;
+    private $deathDate;
+    private $primaryGenre;
+
+    public function __construct($name, $nationality, $primaryGenre)
+    {
+        $this->id = uniqid();
         $this->name = $name;
-        $this->biography = $biography;
         $this->nationality = $nationality;
-        $this->birthDate = $birthDate;
-        $this->deathDate = $deathDate;
         $this->primaryGenre = $primaryGenre;
     }
-    
-    public function getAuthorId(): int { return $this->authorId; }
-    public function getName(): string { return $this->name; }
-    public function getBiography(): ?string { return $this->biography; }
-    public function getNationality(): ?string { return $this->nationality; }
-    public function getBirthDate(): ?string { return $this->birthDate; }
-    public function getDeathDate(): ?string { return $this->deathDate; }
-    public function getPrimaryGenre(): ?string { return $this->primaryGenre; }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getBiography()
+    {
+        return $this->biography;
+    }
+
+    public function setBiography($biography)
+    {
+        $this->biography = $biography;
+    }
+
+    public function getNationality()
+    {
+        return $this->nationality;
+    }
+
+    public function getBirthDate()
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate($birthDate)
+    {
+        $this->birthDate = $birthDate;
+    }
+
+    public function getDeathDate()
+    {
+        return $this->deathDate;
+    }
+
+    public function setDeathDate($deathDate)
+    {
+        $this->deathDate = $deathDate;
+    }
+
+    public function getPrimaryGenre()
+    {
+        return $this->primaryGenre;
+    }
 }
